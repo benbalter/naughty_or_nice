@@ -18,4 +18,6 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency('pry', '~> 0.9')
   gem.add_development_dependency('shoulda', '~> 3.5')
   gem.add_development_dependency('rake', '~> 10.3')
+  gem.add_development_dependency( "pry" )
+
 end
