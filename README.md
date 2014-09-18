@@ -1,5 +1,7 @@
 # Naughty or Nice
 
+Naughty or Nice simplifies the process of extracting domain information from a domain-like string (an email, a URL, etc.) and checking whether it meets criteria you specify.
+
 ## Usage
 
 Naughty or Nice doesn't do too much on its own. Out of the box, it can extract a domain from a domain-like string, and can verify that it is, in fact, a valid domain. It does this by leveraging the power of the [Public Suffix List](http://publicsuffix.org/), and the associated [Ruby Gem](https://github.com/weppos/publicsuffix-ruby).
