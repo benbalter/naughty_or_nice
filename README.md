@@ -4,7 +4,7 @@ Naughty or Nice simplifies the process of extracting domain information from a d
 
 ## Usage
 
-Naughty or Nice doesn't do too much on its own. Out of the box, it can extract a domain from a domain-like string, and can verify that it is, in fact, a valid domain. It does this by leveraging the power of the [Public Suffix List](http://publicsuffix.org/), and the associated [Ruby Gem](https://github.com/weppos/publicsuffix-ruby).
+Naughty or Nice doesn't do too much on its own. Out of the box, it can extract a domain from a domain-like string, and can verify that it is, in fact, a valid domain. It does this by leveraging the power of [Addressable](https://github.com/sporkmonger/addressable), the [Public Suffix List](http://publicsuffix.org/), and the associated [Ruby Gem](https://github.com/weppos/publicsuffix-ruby).
 
 The true power of Naughty or Nice comes when you extended it into a child class.
 
