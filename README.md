@@ -1,5 +1,7 @@
 # Naughty or Nice
 
+[![Build Status](https://travis-ci.org/benbalter/naughty_or_nice.svg)](https://travis-ci.org/benbalter/naughty_or_nice) [![Gem Version](https://badge.fury.io/rb/naughty_or_nice.svg)](http://badge.fury.io/rb/naughty_or_nice)
+
 Naughty or Nice simplifies the process of extracting domain information from a domain-like string (an email, a URL, etc.) and checking whether it meets criteria you specify.
 
 ## Usage
