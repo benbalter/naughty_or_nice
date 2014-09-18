@@ -1,6 +1,5 @@
 require 'public_suffix'
 require "addressable/uri"
-require_relative "naughty_or_nice/version"
 
 class NaughtyOrNice
 

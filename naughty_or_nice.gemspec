@@ -1,9 +1,9 @@
 Gem::Specification.new do |gem|
   gem.name    = 'naughty_or_nice'
-  gem.version = "0.0.1"
+  gem.version = "0.0.2"
 
-  gem.summary     = ""
-  gem.description = ""
+  gem.summary     = "Given a domain-like string, verifies inclusion in a list you provide."
+  gem.description = "You've made the list. We'll help you check it twice."
 
   gem.authors  = ['Ben Balter']
   gem.email    = 'ben.balter@github.com'
