@@ -20,7 +20,7 @@ class Checker < NaughtyOrNice
 end
 ```
 
-That's it!
+That's it! Just overwrite the `valid?` method and Naughty or Nice takes care of the rest.
 
 ## Using the extended class
 
