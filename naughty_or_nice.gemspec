@@ -12,7 +12,7 @@ Gem::Specification.new do |gem|
 
   gem.files = Dir['Rakefile', '{bin,lib}/**/*', 'README*', 'LICENSE*']
 
-  gem.add_dependency( "public_suffix", '~> 1.4')
+  gem.add_dependency( "public_suffix", '>= 1.2')
   gem.add_dependency( "addressable", '~> 2.3' )
 
   gem.add_development_dependency('pry', '~> 0.9')
