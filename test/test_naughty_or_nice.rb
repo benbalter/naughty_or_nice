@@ -32,4 +32,8 @@ class TestNaughtyOrNice < Minitest::Test
   should "not err out on invalid hosts" do
     assert_equal nil, NaughtyOrNice.new("</@foo.com").domain
   end
+
+  should "not err out on invalid email addresses" do
+    assert_equal nil, NaughtyOrNice.new(":foo@bar.gov").domain
+  end
 end
