@@ -68,15 +68,13 @@ class NaughtyOrNice
       elsif email?
         @text.match(/@([\w\.\-]+)\Z/i)[1]
       else # url sans http://
-        begin
-          uri = Addressable::URI.parse("http://#{@text}")
-          # properly parse http://foo edge cases
-          # see https://github.com/sporkmonger/addressable/issues/145
-          uri.host if uri.host =~ /\./
-        rescue Addressable::URI::InvalidURIError
-          nil
-        end
+        uri = Addressable::URI.parse("http://#{@text}")
+        # properly parse http://foo edge cases
+        # see https://github.com/sporkmonger/addressable/issues/145
+        uri.host if uri.host =~ /\./
       end
+    rescue Addressable::URI::InvalidURIError
+      nil
     end
   end
   alias_method :to_s, :domain
