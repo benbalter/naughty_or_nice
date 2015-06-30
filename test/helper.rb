@@ -6,3 +6,7 @@ require 'shoulda'
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 
 require 'naughty_or_nice'
+
+class TestHelper
+  include NaughtyOrNice
+end
