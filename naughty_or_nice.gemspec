@@ -1,4 +1,4 @@
-require_relative './lib/naughty_or_nice/version'
+require File.expand_path("../lib/naughty_or_nice/version", __FILE__)
 
 Gem::Specification.new do |gem|
   gem.name    = 'naughty_or_nice'
