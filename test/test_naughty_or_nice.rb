@@ -11,6 +11,11 @@ class TestNaughtyOrNice < Minitest::Test
     assert_equal nil, NaughtyOrNice.new("foo").domain
   end
 
+  should "accept PublicSuffix::Domains" do
+    domain = PublicSuffix.parse("foo.gov")
+    assert_equal "foo.gov", NaughtyOrNice.new(domain).domain
+  end
+
   should "not err out on invalid domains" do
     assert_equal false, NaughtyOrNice.valid?("foo@gov.invalid")
     assert_equal "gov.invalid", NaughtyOrNice.new("foo@gov.invalid").domain

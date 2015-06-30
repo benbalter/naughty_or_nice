@@ -48,8 +48,13 @@ class NaughtyOrNice
         $
       }xi
 
-  def initialize(text)
-    @text = text.to_s.downcase.strip
+  def initialize(domain)
+    if domain.is_a?(PublicSuffix::Domain)
+      @domain_parts = domain
+      @text = domain.to_s
+    else
+      @text = domain.to_s.downcase.strip
+    end
   end
 
   # Parse the domain from the input string
@@ -83,7 +88,7 @@ class NaughtyOrNice
   #
   # Returns boolean true if a valid domain, otherwise false
   def valid?
-    PublicSuffix.valid?(domain)
+    !!(domain_parts && domain_parts.valid?)
   end
 
   # Is the input text in the form of a valid email address?
@@ -99,9 +104,11 @@ class NaughtyOrNice
   #
   # Returns the domain object or nil, but no errors, never an error
   def domain_parts
-    PublicSuffix.parse domain
-  rescue PublicSuffix::DomainInvalid
-    nil
+    @domain_parts ||= begin
+      PublicSuffix.parse domain
+    rescue PublicSuffix::DomainInvalid, PublicSuffix::DomainNotAllowed
+      nil
+    end
   end
 
   def inspect
