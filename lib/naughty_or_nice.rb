@@ -1,13 +1,8 @@
 require 'public_suffix'
 require "addressable/uri"
+require_relative './naughty_or_nice/version'
 
-class NaughtyOrNice
-
-  class << self
-    def valid?(text)
-      self.new(text).valid?
-    end
-  end
+module NaughtyOrNice
 
   # Source: http://bit.ly/1n2X9iv
   EMAIL_REGEX = %r{
@@ -47,6 +42,17 @@ class NaughtyOrNice
         )
         $
       }xi
+
+  module ClassMethods
+    def valid?(text)
+      self.new(text).valid?
+    end
+  end
+
+  # Ruby idiom that allows `include` to create class methods
+  def self.included(base)
+    base.extend(ClassMethods)
+  end
 
   def initialize(domain)
     if domain.is_a?(PublicSuffix::Domain)

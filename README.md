@@ -8,14 +8,16 @@ Naughty or Nice simplifies the process of extracting domain information from a d
 
 Naughty or Nice doesn't do too much on its own. Out of the box, it can extract a domain from a domain-like string, and can verify that it is, in fact, a valid domain. It does this by leveraging the power of [Addressable](https://github.com/sporkmonger/addressable), the [Public Suffix List](http://publicsuffix.org/), and the associated [Ruby Gem](https://github.com/weppos/publicsuffix-ruby).
 
-The true power of Naughty or Nice comes when you extended it into a child class.
+The true power of Naughty or Nice comes when you include it into your own class.
 
-## Extending Naughty or Nice
+## Implementing Naughty or Nice
 
 Let's say you have a list of three domains, `foo.com`, `bar.com`, and `foobar.com`. You'd spec out a class like so:
 
 ```ruby
-class Checker < NaughtyOrNice
+class Checker
+
+  include NaughtyOrNice
   DOMAINS = %w[foo.com bar.com foobar.com]
 
   def valid?
@@ -26,9 +28,9 @@ end
 
 That's it! Just overwrite the `valid?` method and Naughty or Nice takes care of the rest.
 
-## Using the extended class
+## Using the included methods
 
-There are a handful of magic methods that your child class automatically gets. You can throw any domain-like string at your new `Checker` class, and figure out if it's on the list. Here's a few examples:
+There are a handful of magic methods that your class automatically gets. You can throw any domain-like string at your new `Checker` class, and figure out if it's on the list. Here's a few examples:
 
 ```ruby
 Checker.valid? "foo.com" #=> true
