@@ -56,45 +56,29 @@ module NaughtyOrNice
 
   def initialize(domain)
     if domain.is_a?(PublicSuffix::Domain)
-      @domain_parts = domain
-      @text = domain.to_s
+      @domain = domain
+      @text   = domain.to_s
     else
       @text = domain.to_s.downcase.strip
     end
   end
 
-  # Parse the domain from the input string
+  # Return the public suffix domain object
   #
-  # Can handle urls, domains, or emails
+  # Supports all domain strings (URLs, emails)
   #
-  # Returns the domain string
+  # Returns the domain object or nil, but no errors, never an error
   def domain
-    @domain ||= begin
-      return nil if @text.empty?
-
-      uri = Addressable::URI.parse(@text)
-
-      if uri.host # valid https?://* URI
-        uri.host
-      elsif email?
-        @text.match(/@([\w\.\-]+)\Z/i)[1]
-      else # url sans http://
-        uri = Addressable::URI.parse("http://#{@text}")
-        # properly parse http://foo edge cases
-        # see https://github.com/sporkmonger/addressable/issues/145
-        uri.host if uri.host =~ /\./
-      end
-    rescue Addressable::URI::InvalidURIError
-      nil
-    end
+    @domain ||= PublicSuffix.parse(domain_text)
+  rescue PublicSuffix::DomainInvalid, PublicSuffix::DomainNotAllowed
+    nil
   end
-  alias_method :to_s, :domain
 
   # Checks if the input string represents a valid domain
   #
   # Returns boolean true if a valid domain, otherwise false
   def valid?
-    !!(domain_parts && domain_parts.valid?)
+    !!(domain && domain.valid?)
   end
 
   # Is the input text in the form of a valid email address?
@@ -104,20 +88,38 @@ module NaughtyOrNice
     !!(@text =~ EMAIL_REGEX)
   end
 
-  # Helper function to return the public suffix domain object
-  #
-  # Supports all domain strings (URLs, emails)
-  #
-  # Returns the domain object or nil, but no errors, never an error
-  def domain_parts
-    @domain_parts ||= begin
-      PublicSuffix.parse domain
-    rescue PublicSuffix::DomainInvalid, PublicSuffix::DomainNotAllowed
-      nil
-    end
+  # Return the parsed domain as a string
+  def to_s
+    domain.to_s if domain
   end
 
   def inspect
     "#<#{self.class} domain=\"#{domain}\" valid=#{valid?}>"
+  end
+
+  private
+
+  # Parse the domain from the input string
+  #
+  # Can handle urls, domains, or emails
+  #
+  # Returns the domain string
+  def domain_text
+    return nil if @text.empty?
+
+    uri = Addressable::URI.parse(@text)
+
+    if uri.host # valid https?://* URI
+      uri.host
+    elsif email?
+      @text.match(/@([\w\.\-]+)\Z/i)[1]
+    else # url sans http://
+      uri = Addressable::URI.parse("http://#{@text}")
+      # properly parse http://foo edge cases
+      # see https://github.com/sporkmonger/addressable/issues/145
+      uri.host if uri.host =~ /\./
+    end
+  rescue Addressable::URI::InvalidURIError
+    nil
   end
 end
