@@ -90,7 +90,7 @@ module NaughtyOrNice
 
   # Return the parsed domain as a string
   def to_s
-    domain.to_s if domain
+    @to_s ||= domain.to_s if domain
   end
 
   def inspect
