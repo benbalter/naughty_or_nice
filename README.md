@@ -21,12 +21,25 @@ class Checker
   DOMAINS = %w[foo.com bar.com foobar.com]
 
   def valid?
-    DOMAINS.include? domain
+    DOMAINS.include? domain.to_s
   end
 end
 ```
 
 That's it! Just overwrite the `valid?` method and Naughty or Nice takes care of the rest.
+
+You can also get more complicated. Let's say you only wanted to allow `.gov` domains:
+
+```ruby
+class Checker
+
+  include NaughtyOrNice
+
+  def valid?
+    domain.tld == ".gov"
+  end
+end
+```
 
 ## Using the included methods
 
@@ -54,9 +67,9 @@ You can also you NaughtyOrNice to extract domain information for use elsewhere. 
 ```ruby
 address = Checker.new "baz@foo.bar.com"
 address.valid?           #=> true
-address.domain           #=> "foo.bar.com"
-address.domain_parts.tld #=> "com"
-address.domain_parts.sld #=> "bar"
+address.domain.to_s      #=> "foo.bar.com"
+address.domain.tld       #=> "com"
+address.domain.sld       #=> "bar"
 ```
 
 ## See it in action
