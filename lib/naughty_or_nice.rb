@@ -69,9 +69,13 @@ module NaughtyOrNice
   #
   # Returns the domain object or nil, but no errors, never an error
   def domain
-    @domain ||= PublicSuffix.parse(domain_text)
-  rescue PublicSuffix::DomainInvalid, PublicSuffix::DomainNotAllowed
-    nil
+    return @domain if defined? @domain
+    
+    @domain = begin
+      PublicSuffix.parse(domain_text)
+    rescue PublicSuffix::DomainInvalid, PublicSuffix::DomainNotAllowed
+      nil
+    end
   end
 
   # Checks if the input string represents a valid domain
