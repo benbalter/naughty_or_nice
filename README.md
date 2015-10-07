@@ -36,7 +36,7 @@ class Checker
   include NaughtyOrNice
 
   def valid?
-    domain.tld == ".gov"
+    domain.tld == "gov"
   end
 end
 ```
