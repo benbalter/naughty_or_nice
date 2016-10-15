@@ -1,9 +1,8 @@
 require 'public_suffix'
-require "addressable/uri"
+require 'addressable/uri'
 require_relative './naughty_or_nice/version'
 
 module NaughtyOrNice
-
   # Source: http://bit.ly/1n2X9iv
   EMAIL_REGEX = %r{
         ^
@@ -45,7 +44,7 @@ module NaughtyOrNice
 
   module ClassMethods
     def valid?(text)
-      self.new(text).valid?
+      new(text).valid?
     end
   end
 
@@ -70,7 +69,7 @@ module NaughtyOrNice
   # Returns the domain object or nil, but no errors, never an error
   def domain
     return @domain if defined? @domain
-    
+
     @domain = begin
       PublicSuffix.parse(domain_text)
     rescue PublicSuffix::DomainInvalid, PublicSuffix::DomainNotAllowed

@@ -7,7 +7,7 @@ Rake::TestTask.new(:test) do |test|
   test.verbose = true
 end
 
-desc "Open console with Naughty Or Nice loaded"
+desc 'Open console with Naughty Or Nice loaded'
 task :console do
-  exec "pry -r ./lib/naughty_or_nice.rb"
+  exec 'pry -r ./lib/naughty_or_nice.rb'
 end
