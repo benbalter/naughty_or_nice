@@ -1,5 +1,7 @@
 #!/bin/sh
 
-bundle exec rake test
+set -e
+
+bundle exec rspec
 bundle exec rubocop -S -D
 gem build naughty_or_nice.gemspec

@@ -1,0 +1,6 @@
+#!/bin/sh
+# Open a Ruby console with Naughty or Nice loaded
+
+set -e
+
+bundle exec pry -r ./lib/naughty_or_nice.rb
