@@ -9,13 +9,22 @@ RSpec.describe NaughtyOrNice do
     'http://github.gov'  => 'github.gov',
     'https://github.gov' => 'github.gov',
     '.gov'               => '.gov',
-    'foo'                => nil
+    'foo'                => nil,
+    'http://foo'         => nil
   }.each do |input, expected|
     context "when given #{input}" do
       let(:domain) { input }
 
+      it 'normalizes the domain' do
+        expect(subject.send(:normalized_domain)).to eql(expected)
+      end
+
       it 'parses the domain' do
-        expect(subject.send(:domain_text)).to eql(expected)
+        if expected.nil?
+          expect(subject.send(:parsed_domain)).to be_nil
+        else
+          expect(subject.send(:parsed_domain).host).to eql(expected)
+        end
       end
     end
   end
@@ -25,6 +34,14 @@ RSpec.describe NaughtyOrNice do
 
     it 'parses the domain' do
       expect(subject.domain.to_s).to eql('foo.gov')
+    end
+
+    it 'knows the domain is valid' do
+      expect(subject.valid?).to eql(true)
+    end
+
+    it "knows it's not an email" do
+      expect(subject.email?).to eql(false)
     end
   end
 
@@ -42,6 +59,14 @@ RSpec.describe NaughtyOrNice do
     it 'returns the PublicSuffix::Domain' do
       expect(subject.domain).to be_a(PublicSuffix::Domain)
     end
+
+    it 'knows the domain is valid' do
+      expect(subject.valid?).to eql(true)
+    end
+
+    it "knows it's not an email" do
+      expect(subject.email?).to eql(false)
+    end
   end
 
   context 'when given an invalid domain' do
@@ -52,6 +77,18 @@ RSpec.describe NaughtyOrNice do
       expect(subject.to_s).to be_nil
 
       expect(TestHelper.valid?(domain)).to eql(false)
+    end
+
+    it 'knows the domain is invalid' do
+      expect(subject.valid?).to eql(false)
+    end
+  end
+
+  context 'when given an email' do
+    let(:domain) { 'foo@bar.gov' }
+
+    it "knows it's an email" do
+      expect(subject.email?).to eql(true)
     end
   end
 
@@ -96,13 +133,21 @@ RSpec.describe NaughtyOrNice do
       it "doesn't error" do
         expect { subject.domain }.to_not raise_error
       end
+
+      it 'knows the domain is invalid' do
+        expect(subject.valid?).to eql(false)
+      end
     end
 
     context 'when given an invalid email' do
-      let(:domain) { ':foo@bar.gov' }
+      let(:domain) { 'foo@bar' }
 
       it "doesn't error" do
         expect { subject.domain }.to_not raise_error
+      end
+
+      it 'knows the domain is invalid' do
+        expect(subject.valid?).to eql(false)
       end
     end
   end

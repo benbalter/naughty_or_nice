@@ -2,6 +2,7 @@ require 'public_suffix'
 require 'addressable/uri'
 require_relative './naughty_or_nice/version'
 
+# Primary module to be mixed into the child class
 module NaughtyOrNice
   # Source: http://bit.ly/1n2X9iv
   EMAIL_REGEX = %r{
@@ -42,13 +43,13 @@ module NaughtyOrNice
         $
       }xi
 
+  # Ruby idiom that allows `include` to create class methods
   module ClassMethods
     def valid?(text)
       new(text).valid?
     end
   end
 
-  # Ruby idiom that allows `include` to create class methods
   def self.included(base)
     base.extend(ClassMethods)
   end
@@ -71,7 +72,7 @@ module NaughtyOrNice
     return @domain if defined? @domain
 
     @domain = begin
-      PublicSuffix.parse(domain_text)
+      PublicSuffix.parse(normalized_domain, default_rule: nil)
     rescue PublicSuffix::DomainInvalid, PublicSuffix::DomainNotAllowed
       nil
     end
@@ -81,14 +82,14 @@ module NaughtyOrNice
   #
   # Returns boolean true if a valid domain, otherwise false
   def valid?
-    !!(domain && domain.valid?)
+    !domain.nil?
   end
 
   # Is the input text in the form of a valid email address?
   #
   # Returns true if email, otherwise false
   def email?
-    !!(@text =~ EMAIL_REGEX)
+    !(@text =~ EMAIL_REGEX).nil?
   end
 
   # Return the parsed domain as a string
@@ -107,20 +108,22 @@ module NaughtyOrNice
   # Can handle urls, domains, or emails
   #
   # Returns the domain string
-  def domain_text
-    return nil if @text.empty?
+  def normalized_domain
+    if @text.empty?
+      nil
+    elsif parsed_domain
+      parsed_domain.host
+    end
+  end
 
-    uri = Addressable::URI.parse(@text)
-
-    if uri.host # valid https?://* URI
-      uri.host
-    elsif email?
-      @text.match(/@([\w\.\-]+)\Z/i)[1]
-    else # url sans http://
-      uri = Addressable::URI.parse("http://#{@text}")
+  def parsed_domain
+    @parsed_domain ||= begin
+      text = @text.dup
+      text = text.prepend('http://') unless text =~ %r{\Ahttps?://}
+      uri  = Addressable::URI.parse(text)
       # properly parse http://foo edge cases
       # see https://github.com/sporkmonger/addressable/issues/145
-      uri.host if uri.host =~ /\./
+      uri if uri.host.include?('.')
     end
   rescue Addressable::URI::InvalidURIError
     nil
