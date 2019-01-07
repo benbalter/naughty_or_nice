@@ -4,13 +4,13 @@ RSpec.describe NaughtyOrNice do
 
   # Test case => expected response
   {
-    'foo@github.gov'     => 'github.gov',
-    'foo.github.gov'     => 'foo.github.gov',
-    'http://github.gov'  => 'github.gov',
+    'foo@github.gov' => 'github.gov',
+    'foo.github.gov' => 'foo.github.gov',
+    'http://github.gov' => 'github.gov',
     'https://github.gov' => 'github.gov',
-    '.gov'               => '.gov',
-    'foo'                => nil,
-    'http://foo'         => nil
+    '.gov' => '.gov',
+    'foo' => nil,
+    'http://foo' => nil
   }.each do |input, expected|
     context "when given #{input}" do
       let(:domain) { input }

@@ -1,4 +1,4 @@
-require File.expand_path('../lib/naughty_or_nice/version', __FILE__)
+require File.expand_path('lib/naughty_or_nice/version', __dir__)
 
 Gem::Specification.new do |gem|
   gem.name    = 'naughty_or_nice'
@@ -16,8 +16,8 @@ Gem::Specification.new do |gem|
 
   gem.files = Dir['Rakefile', '{bin,lib}/**/*', 'README*', 'LICENSE*']
 
-  gem.add_dependency('public_suffix', '~> 2.0')
   gem.add_dependency('addressable', '~> 2.3')
+  gem.add_dependency('public_suffix', '~> 2.0')
 
   gem.add_development_dependency('pry', '~> 0.9')
   gem.add_development_dependency('rspec', '~> 3.5')

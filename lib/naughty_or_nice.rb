@@ -41,7 +41,7 @@ module NaughtyOrNice
           )?
         )
         $
-      }xi
+      }xi.freeze
 
   # Ruby idiom that allows `include` to create class methods
   module ClassMethods
@@ -73,8 +73,8 @@ module NaughtyOrNice
 
     @domain = begin
       PublicSuffix.parse(normalized_domain, default_rule: nil)
-    rescue PublicSuffix::DomainInvalid, PublicSuffix::DomainNotAllowed
-      nil
+              rescue PublicSuffix::DomainInvalid, PublicSuffix::DomainNotAllowed
+                nil
     end
   end
 
