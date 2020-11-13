@@ -1,6 +1,9 @@
+# frozen_string_literal: true
+
 RSpec.describe NaughtyOrNice do
-  let(:domain) { 'example.com' }
   subject { TestHelper.new(domain) }
+
+  let(:domain) { 'example.com' }
 
   # Test case => expected response
   {
@@ -37,11 +40,11 @@ RSpec.describe NaughtyOrNice do
     end
 
     it 'knows the domain is valid' do
-      expect(subject.valid?).to eql(true)
+      expect(subject.valid?).to be(true)
     end
 
     it "knows it's not an email" do
-      expect(subject.email?).to eql(false)
+      expect(subject.email?).to be(false)
     end
   end
 
@@ -61,11 +64,11 @@ RSpec.describe NaughtyOrNice do
     end
 
     it 'knows the domain is valid' do
-      expect(subject.valid?).to eql(true)
+      expect(subject.valid?).to be(true)
     end
 
     it "knows it's not an email" do
-      expect(subject.email?).to eql(false)
+      expect(subject.email?).to be(false)
     end
   end
 
@@ -76,11 +79,11 @@ RSpec.describe NaughtyOrNice do
       expect(subject.domain).to be_nil
       expect(subject.to_s).to be_nil
 
-      expect(TestHelper.valid?(domain)).to eql(false)
+      expect(TestHelper.valid?(domain)).to be(false)
     end
 
     it 'knows the domain is invalid' do
-      expect(subject.valid?).to eql(false)
+      expect(subject.valid?).to be(false)
     end
   end
 
@@ -88,7 +91,7 @@ RSpec.describe NaughtyOrNice do
     let(:domain) { 'foo@bar.gov' }
 
     it "knows it's an email" do
-      expect(subject.email?).to eql(true)
+      expect(subject.email?).to be(true)
     end
   end
 
@@ -131,11 +134,11 @@ RSpec.describe NaughtyOrNice do
       let(:domain) { '</@foo.com' }
 
       it "doesn't error" do
-        expect { subject.domain }.to_not raise_error
+        expect { subject.domain }.not_to raise_error
       end
 
       it 'knows the domain is invalid' do
-        expect(subject.valid?).to eql(false)
+        expect(subject.valid?).to be(false)
       end
     end
 
@@ -143,11 +146,11 @@ RSpec.describe NaughtyOrNice do
       let(:domain) { 'foo@bar' }
 
       it "doesn't error" do
-        expect { subject.domain }.to_not raise_error
+        expect { subject.domain }.not_to raise_error
       end
 
       it 'knows the domain is invalid' do
-        expect(subject.valid?).to eql(false)
+        expect(subject.valid?).to be(false)
       end
     end
   end

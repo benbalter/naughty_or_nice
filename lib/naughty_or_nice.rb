@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'public_suffix'
 require 'addressable/uri'
 require_relative './naughty_or_nice/version'
@@ -8,11 +10,11 @@ module NaughtyOrNice
   EMAIL_REGEX = %r{
         ^
         (
-          [\w\!\#\$\%\&\'\*\+\-\/\=\?\^\`\{\|\}\~]+
+          [\w!\#$%&'*+\-/=?\^`\{|\}~]+
           \.
         )
         *
-        [\w\!\#\$\%\&\'\*\+\-\/\=\?\^\`\{\|\}\~]+
+        [\w!\#$%&'*+\-/=?\^`\{|\}~]+
         @
         (
           (
@@ -37,7 +39,7 @@ module NaughtyOrNice
           ){3}
           \d{1,3}
           (
-            \:\d{1,5}
+            :\d{1,5}
           )?
         )
         $
@@ -73,8 +75,8 @@ module NaughtyOrNice
 
     @domain = begin
       PublicSuffix.parse(normalized_domain, default_rule: nil)
-              rescue PublicSuffix::DomainInvalid, PublicSuffix::DomainNotAllowed
-                nil
+    rescue PublicSuffix::DomainInvalid, PublicSuffix::DomainNotAllowed
+      nil
     end
   end
 
@@ -119,8 +121,8 @@ module NaughtyOrNice
   def parsed_domain
     @parsed_domain ||= begin
       text = @text.dup
-      text = text.prepend('http://') unless text =~ %r{\Ahttps?://}
-      uri  = Addressable::URI.parse(text)
+      text.prepend('http://') unless %r{\Ahttps?://}.match?(text)
+      uri = Addressable::URI.parse(text)
       # properly parse http://foo edge cases
       # see https://github.com/sporkmonger/addressable/issues/145
       uri if uri.host.include?('.')
